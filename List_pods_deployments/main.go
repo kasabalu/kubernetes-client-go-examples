@@ -12,7 +12,10 @@ import (
 
 func main() {
 	kubeconfig := flag.String("Kubeconfig", "/Users/bkasa724/.kube/config", "location to kube config file")
+	namespace := flag.String("namespace", "default", "namespace name")
+	flag.Parse()
 	config, err := clientcmd.BuildConfigFromFlags("", *kubeconfig)
+	ns := *namespace
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -22,7 +25,7 @@ func main() {
 		panic(err)
 	}
 	ctx := context.Background()
-	pods, err := clientset.CoreV1().Pods("default").List(ctx, metav1.ListOptions{})
+	pods, err := clientset.CoreV1().Pods(ns).List(ctx, metav1.ListOptions{})
 
 	if err != nil {
 		fmt.Println(err)
@@ -32,7 +35,7 @@ func main() {
 		fmt.Println(pod.Name)
 	}
 
-	deployments, err := clientset.AppsV1().Deployments("minio-api").List(ctx, metav1.ListOptions{})
+	deployments, err := clientset.AppsV1().Deployments(ns).List(ctx, metav1.ListOptions{})
 	fmt.Println("")
 	fmt.Println("")
 	fmt.Println("deployments are")
