@@ -17,7 +17,7 @@ func main() {
 	config, err := clientcmd.BuildConfigFromFlags("", *kubeconfig)
 	ns := *namespace
 	if err != nil {
-		fmt.Println(err)
+		panic(err.Error())
 	}
 
 	clientset, err := kubernetes.NewForConfig(config)
@@ -28,7 +28,7 @@ func main() {
 	pods, err := clientset.CoreV1().Pods(ns).List(ctx, metav1.ListOptions{})
 
 	if err != nil {
-		fmt.Println(err)
+		panic(err.Error())
 	}
 	fmt.Println(pods.Items[0])
 	for _, pod := range pods.Items {
