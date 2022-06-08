@@ -34,6 +34,14 @@ func main() {
 		panic(err)
 	}
 	informerfactory := informers.NewSharedInformerFactory(clientset, 10*time.Minute)
+
+	/*
+		informerfactory := informers.NewFilteredSharedInformerFactory(clientset, 10*time.Minute, ns, func(lo *metav1.ListOptions) {
+			lo.LabelSelector = "app"
+		})
+
+	*/
+
 	podinformation := informerfactory.Core().V1().Pods()
 	podinformation.Informer().AddEventHandler(cache.ResourceEventHandlerFuncs{
 		AddFunc: func(new interface{}) {
