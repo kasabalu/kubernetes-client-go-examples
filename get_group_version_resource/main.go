@@ -14,7 +14,12 @@ func main() {
 	flag.Parse()
 
 	//NewConfigFlags returns ConfigFlags with default values set
+	// WithDeprecatedPasswordFlag() enables usernmae, pwd(empty ones)
 	configFlag := genericclioptions.NewConfigFlags(true).WithDeprecatedPasswordFlag()
+	//ConfigFlags composes the set of values necessary for obtaining a REST client
+
+	// To get the RestMapperInterface , we have RESTClientGetter Interface.
+	//RESTClientGetter Interface has ToRESTMapper() method that will return RestMapper interface.
 	matchVersionFlags := cmduttil.NewMatchVersionFlags(configFlag)
 	m, err := cmduttil.NewFactory(matchVersionFlags).ToRESTMapper()
 	if err != nil {
@@ -29,6 +34,5 @@ func main() {
 		return
 	}
 	fmt.Printf("group %s, version %s, resource %s", gvr.Group, gvr.Version, gvr.Resource)
-
 	fmt.Println()
 }
